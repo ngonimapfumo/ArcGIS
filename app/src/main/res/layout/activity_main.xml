@@ -9,7 +9,16 @@
     <com.esri.arcgisruntime.mapping.view.MapView
         android:id="@+id/arc_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="#90000000"
+            android:queryBackground="@color/blackish"
+            android:queryHint="Search" />
+    </com.esri.arcgisruntime.mapping.view.MapView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
