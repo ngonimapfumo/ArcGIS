@@ -2,7 +2,7 @@ package com.ngoni.arcgis;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,12 +12,16 @@ import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.BasemapStyle;
 import com.esri.arcgisruntime.mapping.Viewpoint;
+import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private MapView mMapView;
-    Location mLocation;
+    private Location mLocation;
+    private GraphicsOverlay mGraphicsOverlay;
+    private LocatorTask mLocatorTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mMapView = findViewById(R.id.arc_map);
         mLocation = new Location(MainActivity.this);
+        mGraphicsOverlay = new GraphicsOverlay();
+        mLocatorTask = new LocatorTask("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         setUpMap();
         checkPermissions();
     }
@@ -34,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         ArcGISMap map = new ArcGISMap(BasemapStyle.ARCGIS_COMMUNITY);
         mMapView.setMap(map);
         mMapView.setViewpoint(new Viewpoint(mLocation.getLatitude(), mLocation.getLongitude(), 72000.0));
-        Toast.makeText(this, mLocation.latitude+"", Toast.LENGTH_SHORT).show();
-        /*-17.8577368116804, 31.038344197312732*/
+        mMapView.getGraphicsOverlays().add(mGraphicsOverlay);
 
     }
 
@@ -56,14 +61,32 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         mMapView.dispose();
     }
-    private void checkPermissions(){
+
+    private void checkPermissions() {
         try {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void searchViewListener() {
+        SearchView searchView;
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
     }
 
 }
