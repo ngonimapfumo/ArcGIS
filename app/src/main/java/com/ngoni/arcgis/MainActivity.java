@@ -9,11 +9,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.esri.arcgisruntime.ArcGISRuntimeEnvironment;
+import com.esri.arcgisruntime.concurrent.ListenableFuture;
 import com.esri.arcgisruntime.mapping.ArcGISMap;
 import com.esri.arcgisruntime.mapping.BasemapStyle;
 import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters;
 import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
 
 public class MainActivity extends AppCompatActivity {
@@ -85,6 +87,23 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
+        });
+    }
+
+    private void geoCode(String query) {
+        GeocodeParameters geocodeParameters = new GeocodeParameters();
+        geocodeParameters.getResultAttributeNames().add("*");
+        geocodeParameters.setMaxResults(1);
+        geocodeParameters.setOutputSpatialReference(mMapView.getSpatialReference());
+        ListenableFuture listenableFuture = mLocatorTask.geocodeAsync(query, geocodeParameters);
+        listenableFuture.addDoneListener(() -> {
+
+            try {
+
+            } catch (Exception e) {
+
+            }
+
         });
 
     }
