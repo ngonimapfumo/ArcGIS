@@ -2,7 +2,9 @@ package com.ngoni.arcgis;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,6 +18,7 @@ import com.esri.arcgisruntime.mapping.Viewpoint;
 import com.esri.arcgisruntime.mapping.view.GraphicsOverlay;
 import com.esri.arcgisruntime.mapping.view.MapView;
 import com.esri.arcgisruntime.tasks.geocode.GeocodeParameters;
+import com.esri.arcgisruntime.tasks.geocode.GeocodeResult;
 import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                geoCode(query);
                 return false;
             }
 
@@ -100,7 +104,14 @@ public class MainActivity extends AppCompatActivity {
 
             try {
 
+                //todo: continue here
+                if ("".isEmpty()) {
+                } else {
+                    Toast.makeText(this, "no result found", Toast.LENGTH_SHORT).show();
+                }
+
             } catch (Exception e) {
+                Log.e(MainActivity.class.getSimpleName(), "Error getting result" + e.getLocalizedMessage());
 
             }
 
