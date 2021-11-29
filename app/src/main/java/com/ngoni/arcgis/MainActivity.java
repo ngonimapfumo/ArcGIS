@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = mBinding.getRoot();
-        setContentView(view);
+        setContentView(mBinding.getRoot());
 
         mMapView = mBinding.arcMap;
         mLocation = new Location(MainActivity.this);
